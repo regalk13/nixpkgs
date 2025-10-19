@@ -75,15 +75,15 @@ stdenv.mkDerivation (finalAttrs: {
     "man"
   ];
 
-  postPatch =
+  prePatch =
     let
       configFile =
         if lib.isDerivation configH || builtins.isPath configH then
           configH
         else
-          writeText "config.h" configH;
+          writeText "config.def.h" configH;
     in
-    lib.optionalString withCustomConfigH "cp ${configFile} config.h";
+    lib.optionalString withCustomConfigH "cp ${configFile} config.def.h";
 
   makeFlags = [
     "PKG_CONFIG=${stdenv.cc.targetPrefix}pkg-config"
